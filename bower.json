@@ -4,7 +4,7 @@
   "authors": [
     "Mauro Bianchi <bianchimro@gmail.com>"
   ],
-  "description": "Application settings stored in localstorage for angular js",
+  "description": "PouchDB utils for angular",
   "main": "angular-pouch-utils.js",
   "license": "MIT",
   "ignore": [
