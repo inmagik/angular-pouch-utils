@@ -1,0 +1,10 @@
+{
+  "name" : "angular-pouch-utils",
+  "description" : "PouchDB utils for angular",
+  "author" : "Mauro Bianchi <bianchimro@gmail.com>",
+  "contributors" : [],
+  
+  "repository" : {"type": "git", "url": "git://github.com/inmagik/angular-pouch-utils.git"},
+  "main" : "angular-pouch-utils.js",
+  "version" : "0.1.0"
+}

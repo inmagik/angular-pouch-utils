@@ -1,0 +1,20 @@
+{
+  "name": "angular-ls-settings",
+  "version": "0.1.0",
+  "authors": [
+    "Mauro Bianchi <bianchimro@gmail.com>"
+  ],
+  "description": "Application settings stored in localstorage for angular js",
+  "main": "angular-ls-settings.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2"
+  }
+}
