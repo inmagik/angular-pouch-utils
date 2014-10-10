@@ -5,7 +5,7 @@
     angular.module("pouchUtils", [] )
 
 
-    .factory("pouchService", [ "$q", function(q) {
+    .factory("pouchService", [ "$q", function($q) {
 
         var svc = {};
         svc.getDocListFactory = function(db) {
