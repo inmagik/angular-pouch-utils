@@ -1,11 +1,11 @@
 {
-  "name": "angular-ls-settings",
+  "name": "angular-pouch-utils",
   "version": "0.1.0",
   "authors": [
     "Mauro Bianchi <bianchimro@gmail.com>"
   ],
   "description": "Application settings stored in localstorage for angular js",
-  "main": "angular-ls-settings.js",
+  "main": "angular-pouch-utils.js",
   "license": "MIT",
   "ignore": [
     "**/.*",
