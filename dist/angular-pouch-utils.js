@@ -1,7 +1,7 @@
 /*!
  * angular-pouch-utils
  * 
- * Version: 0.1.0 - 2014-10-10T15:18:52.873Z
+ * Version: 0.1.0 - 2014-10-10T15:49:02.673Z
  * License: 
  */
 
@@ -13,7 +13,7 @@
     angular.module("pouchUtils", [] )
 
 
-    .factory("pouchService", [ "$q", function(q) {
+    .factory("pouchService", [ "$q", function($q) {
 
         var svc = {};
         svc.getDocListFactory = function(db) {
