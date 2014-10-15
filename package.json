@@ -1,10 +1,27 @@
 {
-  "name" : "angular-pouch-utils",
-  "description" : "PouchDB utils for angular",
-  "author" : "Mauro Bianchi <bianchimro@gmail.com>",
-  "contributors" : [],
-  
-  "repository" : {"type": "git", "url": "git://github.com/inmagik/angular-pouch-utils.git"},
-  "main" : "angular-pouch-utils.js",
-  "version" : "0.1.0"
+  "name": "angular-pouch-utils",
+  "description": "PouchDB utils for angular",
+  "author": "Mauro Bianchi <bianchimro@gmail.com>",
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/inmagik/angular-pouch-utils.git"
+  },
+  "main": "angular-pouch-utils.js",
+  "version": "0.1.0",
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "karma": "^0.12.24",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.5",
+    "karma-coverage": "^0.2.6",
+    "karma-firefox-launcher": "^0.1.3",
+    "karma-htmlfile-reporter": "^0.1.2",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-mocha": "^0.1.9",
+    "karma-mocha-reporter": "^0.3.1",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "karma-safari-launcher": "^0.1.1",
+    "mocha": "^1.21.5"
+  }
 }
