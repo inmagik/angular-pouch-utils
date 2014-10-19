@@ -18,7 +18,7 @@
           if (err){
             deferred.reject(err);
           }
-          var out = _.pluck(doc.rows, 'doc');
+          var out = options.include_docs ? _.pluck(doc.rows, 'doc') : doc.rows;
           deferred.resolve(out);
         });
         return deferred.promise;
@@ -32,7 +32,7 @@
         if (err){
           deferred.reject(err);
         }
-        var out = _.pluck(doc.rows, 'doc');
+        var out = options.include_docs ? _.pluck(doc.rows, 'doc') : doc.rows;
         deferred.resolve(out);
       });
       return deferred.promise;
