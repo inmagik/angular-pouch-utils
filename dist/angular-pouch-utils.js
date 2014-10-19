@@ -1,7 +1,7 @@
 /*!
  * angular-pouch-utils
  * 
- * Version: 0.1.0 - 2014-10-15T15:47:51.068Z
+ * Version: 0.1.0 - 2014-10-19T23:07:24.899Z
  * License: 
  */
 
@@ -26,7 +26,7 @@
           if (err){
             deferred.reject(err);
           }
-          var out = _.pluck(doc.rows, 'doc');
+          var out = options.include_docs ? _.pluck(doc.rows, 'doc') : doc.rows;
           deferred.resolve(out);
         });
         return deferred.promise;
@@ -40,7 +40,7 @@
         if (err){
           deferred.reject(err);
         }
-        var out = _.pluck(doc.rows, 'doc');
+        var out = options.include_docs ? _.pluck(doc.rows, 'doc') : doc.rows;
         deferred.resolve(out);
       });
       return deferred.promise;
