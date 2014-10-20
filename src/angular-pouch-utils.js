@@ -8,16 +8,18 @@
   .factory("pouchService", [ "$q", function($q) {
 
     var svc = {};
-    var baseOptions = {include_docs: true, conflicts:true};
+    
 
     svc.getDocListFactory = function(db) {
       return function(options) {
+        var baseOptions = {include_docs: true, conflicts:true};
         var opts = _.extend(baseOptions, options || {});
         var deferred = $q.defer();
         db.allDocs(opts, function(err, doc) {
           if (err){
             deferred.reject(err);
           }
+          
           var out = opts.include_docs ? _.pluck(doc.rows, 'doc') : doc.rows;
           deferred.resolve(out);
         });
@@ -26,6 +28,7 @@
     };
 
     svc.wrapQuery = function(db, mapRedOptions, options){
+      var baseOptions = {include_docs: true, conflicts:true};
       var opts = _.extend(baseOptions, options || {});
       var deferred = $q.defer();
       db.query(mapRedOptions, opts, function(err, doc) {
@@ -94,6 +97,7 @@
 
     svc.getDocFactory = function(db){
       return function(id, options){
+        var baseOptions = {include_docs: true, conflicts:true};
         var deferred = $q.defer();
         var opts = _.extend({conflicts:true}, options||{});
         db.get(id, opts, function(err, doc) {
