@@ -1,7 +1,7 @@
 /*!
  * angular-pouch-utils
  * 
- * Version: 0.1.0 - 2014-10-21T10:29:06.524Z
+ * Version: 0.1.0 - 2014-10-21T22:49:52.260Z
  * License: 
  */
 
@@ -20,7 +20,7 @@
 
     svc.getDocListFactory = function(db) {
       return function(options) {
-        var baseOptions = {include_docs: true, conflicts:true};
+        var baseOptions = {include_docs: true};
         var opts = _.extend(baseOptions, options || {});
         var deferred = $q.defer();
         db.allDocs(opts, function(err, doc) {
@@ -36,7 +36,7 @@
     };
 
     svc.wrapQuery = function(db, mapRedOptions, options){
-      var baseOptions = {include_docs: true, conflicts:true};
+      var baseOptions = {include_docs: true};
       var opts = _.extend(baseOptions, options || {});
       var deferred = $q.defer();
       db.query(mapRedOptions, opts, function(err, doc) {
@@ -105,9 +105,8 @@
 
     svc.getDocFactory = function(db){
       return function(id, options){
-        var baseOptions = {include_docs: true, conflicts:true};
         var deferred = $q.defer();
-        var opts = _.extend({conflicts:true}, options||{});
+        var opts = _.extend({}, options||{});
         db.get(id, opts, function(err, doc) {
           if (err){
             deferred.reject(err);

@@ -12,7 +12,7 @@
 
     svc.getDocListFactory = function(db) {
       return function(options) {
-        var baseOptions = {include_docs: true, conflicts:true};
+        var baseOptions = {include_docs: true};
         var opts = _.extend(baseOptions, options || {});
         var deferred = $q.defer();
         db.allDocs(opts, function(err, doc) {
@@ -28,7 +28,7 @@
     };
 
     svc.wrapQuery = function(db, mapRedOptions, options){
-      var baseOptions = {include_docs: true, conflicts:true};
+      var baseOptions = {include_docs: true};
       var opts = _.extend(baseOptions, options || {});
       var deferred = $q.defer();
       db.query(mapRedOptions, opts, function(err, doc) {
@@ -97,9 +97,8 @@
 
     svc.getDocFactory = function(db){
       return function(id, options){
-        var baseOptions = {include_docs: true, conflicts:true};
         var deferred = $q.defer();
-        var opts = _.extend({conflicts:true}, options||{});
+        var opts = _.extend({}, options||{});
         db.get(id, opts, function(err, doc) {
           if (err){
             deferred.reject(err);
