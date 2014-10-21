@@ -1,7 +1,7 @@
 /*!
  * angular-pouch-utils
  * 
- * Version: 0.1.0 - 2014-10-20T16:05:50.984Z
+ * Version: 0.1.0 - 2014-10-21T10:29:06.524Z
  * License: 
  */
 
@@ -16,7 +16,7 @@
   .factory("pouchService", [ "$q", function($q) {
 
     var svc = {};
-    
+
 
     svc.getDocListFactory = function(db) {
       return function(options) {
@@ -27,7 +27,7 @@
           if (err){
             deferred.reject(err);
           }
-          
+
           var out = opts.include_docs ? _.pluck(doc.rows, 'doc') : doc.rows;
           deferred.resolve(out);
         });
@@ -159,6 +159,42 @@
       };
     };
 
+    function createDesignDoc(name, mapReduceFunction) {
+      var ddoc = {
+        _id: '_design/' + name,
+        views: {}
+      };
+      ddoc.views[name] = {  };
+      if(mapReduceFunction.map){
+        ddoc.views[name].map =  mapReduceFunction.map.toString();
+      }
+      if(mapReduceFunction.reduce){
+        ddoc.views[name].reduce =  mapReduceFunction.reduce.toString();
+      }
+      return ddoc;
+    }
+
+    svc.putDesignDocFactory = function(db) {
+      return function(name, mapReduceFunction) {
+        var deferred = $q.defer();
+        var ddoc = createDesignDoc(name, mapReduceFunction);
+        db.put(ddoc,  function(err, doc) {
+          if (err) {
+            if(err.name == 'conflict'){
+              deferred.resolve(doc);
+            }
+            deferred.reject(err);
+          }
+          //just init the query
+          db.query(name, {stale: 'update_after'});
+          deferred.resolve(doc);
+        });
+        return deferred.promise;
+      };
+    };
+
+
+
 
     //#TODO: TAKE A LOOK AT https://github.com/pouchdb/GQL
 
@@ -175,7 +211,8 @@
         filter : svc.filterFactory(db),
         reject : svc.rejectFactory(db),
         where : svc.whereFactory(db),
-        whereNot : svc.whereNotFactory(db)
+        whereNot : svc.whereNotFactory(db),
+        putDesign : svc.putDesignDocFactory(db)
 
       };
     };
