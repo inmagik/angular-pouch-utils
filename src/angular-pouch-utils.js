@@ -12,14 +12,14 @@
 
     svc.getDocListFactory = function(db) {
       return function(options) {
-        var baseOptions = {include_docs: true};
+        var baseOptions = {include_docs: true, conflicts:true};
         var opts = _.extend(baseOptions, options || {});
         var deferred = $q.defer();
         db.allDocs(opts, function(err, doc) {
           if (err){
             deferred.reject(err);
+            return;
           }
-
           var out = opts.include_docs ? _.pluck(doc.rows, 'doc') : doc.rows;
           deferred.resolve(out);
         });
@@ -28,7 +28,7 @@
     };
 
     svc.wrapQuery = function(db, mapRedOptions, options){
-      var baseOptions = {include_docs: true};
+      var baseOptions = {include_docs: true, conflicts:true};
       var opts = _.extend(baseOptions, options || {});
       var deferred = $q.defer();
       db.query(mapRedOptions, opts, function(err, doc) {
@@ -97,8 +97,9 @@
 
     svc.getDocFactory = function(db){
       return function(id, options){
+        var baseOptions = {include_docs: true, conflicts:true};
         var deferred = $q.defer();
-        var opts = _.extend({}, options||{});
+        var opts = _.extend({conflicts:true}, options||{});
         db.get(id, opts, function(err, doc) {
           if (err){
             deferred.reject(err);
@@ -150,7 +151,7 @@
       };
     };
 
-    function createDesignDoc(name, mapReduceFunction) {
+    svc.createDesignDoc = function(name, mapReduceFunction) {
       var ddoc = {
         _id: '_design/' + name,
         views: {}
@@ -163,23 +164,55 @@
         ddoc.views[name].reduce =  mapReduceFunction.reduce.toString();
       }
       return ddoc;
-    }
+    };
+
+    svc.createFilterDoc = function(name, filterFunction){
+
+      var ddoc = {
+        _id: '_design/' + name,
+        filters: {
+          name : filterFunction.toString()
+        }
+      };
+      return ddoc;
+
+    };
 
     svc.putDesignDocFactory = function(db) {
-      return function(name, mapReduceFunction) {
+      return function(ddoc, comparer) {
         var deferred = $q.defer();
-        var ddoc = createDesignDoc(name, mapReduceFunction);
-        db.put(ddoc,  function(err, doc) {
-          if (err) {
-            if(err.name == 'conflict'){
-              deferred.resolve(doc);
+        comparer  = comparer || 'views';
+
+        db.get(ddoc._id, function(err,  result){
+          if(err){
+            //it's not there;
+
+          } else {
+            //is there.
+            if (angular.equals(ddoc[comparer], result[comparer])){
+              deferred.resolve(result);
+              return;
             }
-            deferred.reject(err);
+            ddoc._rev = result._rev;
           }
-          //just init the query
-          db.query(name, {stale: 'update_after'});
-          deferred.resolve(doc);
+
+          db.put(ddoc,  function(err, doc) {
+            if (err) {
+              if(err.name == 'conflict'){
+                deferred.resolve(doc);
+              }
+              deferred.reject(err);
+            }
+            //just init the query
+            db.query(name, {stale: 'update_after'});
+            deferred.resolve(doc);
+          });
+
+
+
+
         });
+
         return deferred.promise;
       };
     };
